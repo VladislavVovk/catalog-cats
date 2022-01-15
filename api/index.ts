@@ -2,7 +2,7 @@ import axios from 'axios';
 
 type Props = {
   page?: string
-  breed?: string | string[]
+  breed?: string
 }
 
 
@@ -26,7 +26,8 @@ export const getListBreedsSearch = ({ breed }: Props) => {
 
 export const getListBreed = ({ breed }: Props) => {
   console.log(breed)
-  const apiUrl = `https://cats-api.strsqr.cloud/cats/${breed}`
+  const apiUrl = `https://cats-api.strsqr.cloud/cats/${encodeURI(breed)}`
+  console.log(apiUrl)
   const data = axios.get(apiUrl).then((resp) => {
     console.log(resp.data)
     return resp.data
