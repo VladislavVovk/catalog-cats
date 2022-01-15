@@ -96,7 +96,7 @@ const Cats = () => {
         />
       </InputGroup>
 
-      <Stack justifyContent="center" mt={10} direction="row" {...group}>
+      <Stack  justifyContent="center" mt={10} direction="row"  {...group}>
         {options.map((value) => {
           const radio = getRadioProps({ value })
           return (

@@ -38,7 +38,18 @@ const RadioButton = (props) => {
           color: 'white',
           borderColor: 'teal.600',
         }}
-        px={5}
+        sx={{
+          '@media (max-width: 375px)': {
+            width: "38px"
+          },
+          '@media (max-width: 320px)': {
+            width: "32px",
+            height: "35px",
+            fontSize: "0.9em",
+            px: 3
+          },
+        }}
+        px={{base: 4, md: 5}}
         py={2}
       >
         {props.children}
