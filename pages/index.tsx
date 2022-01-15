@@ -1,8 +1,8 @@
 import Layout from '../components/Layout'
-
+import Cats from '../components/Cats'
 const IndexPage = () => (
   <Layout>
-    <h1>Hello Next.js 👋</h1>
+    <Cats />
   </Layout>
 )
 

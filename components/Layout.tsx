@@ -15,7 +15,7 @@ const Layout = ({ children }: Props) => (
       <title>Catalog cats</title>
     </Head>
     <Navbar />
-    <Container maxW="container.md" pt={14}>
+    <Container maxW="container.lg" pt={14}>
       {children}
     </Container>
   </Box>
