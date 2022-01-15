@@ -1,9 +1,7 @@
-import Layout from '../components/Layout'
 import Cats from '../components/Cats'
+
 const IndexPage = () => (
-  <Layout>
-    <Cats />
-  </Layout>
+    <Cats /> 
 )
 
 export default IndexPage

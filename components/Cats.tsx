@@ -3,7 +3,6 @@ import {
   Box,
   Heading,
   Image,
-  Button,
   Link,
   Divider,
   Stack,
@@ -108,7 +107,7 @@ const Cats = () => {
       </Stack>
       <motion.div animate={controls}>
         {appState.length === 0 ?
-          <Heading mt={10}>
+          <Heading as="h2" mt={10}>
             Похоже ничего не нашлось :(
           </Heading> :
           appState.map(breeds =>
@@ -143,6 +142,7 @@ const Cats = () => {
                   <Link color={useColorModeValue('purple', 'orange')} href={`/breeds/${breeds.slug}`} _hover={{ opacity: 0.5 }}>
                     <Heading
                       width={"100%"}
+                      as="h2"
                       fontSize={{ base: '3xl', sm: '3xl', md: '3xl', lg: '4xl' }}
                       textAlign={{ base: "center", md: "left" }}
 
