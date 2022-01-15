@@ -17,6 +17,9 @@ import {
   useRadioGroup
 } from '@chakra-ui/react'
 
+import Section from './Section'
+import { motion, useAnimation } from 'framer-motion'
+
 
 import { getListBreedsP } from '../api/index'
 
@@ -69,12 +72,28 @@ const Cats = () => {
   })
   const group = getRootProps()
 
+  const controls = useAnimation();
+  const startAnimation = () => {
+    controls.start({
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        delay: 0.2
+      }
+    });
+  }
 
   useEffect(() => {
     const data = getListBreedsP({ page: page }).then((breeds) => {
       setAppState(breeds);
       console.log(page)
     })
+    controls.set({
+      y: 10,
+      opacity: 0,
+    })
+    startAnimation()
   }, [page]);
 
   return (
@@ -89,53 +108,55 @@ const Cats = () => {
           )
         })}
       </Stack>
-      {
-        appState.map(breeds =>
-          <Box >
-            <Stack
-              spacing={{ base: 8, md: 10 }}
-              py={{ base: 5, md: 15 }}
-              width={{ base: '100%', md: '100%' }}
-              direction={{ base: 'column', md: 'row' }}
-              key={breeds.id}
-            >
-              <Box
-                width={{ base: '100%', sm: '85%' }}
-                zIndex="2"
-                marginLeft={{ base: '0', sm: '5%' }}
-                marginTop="5%"
-                order={{ base: 1, md: 0 }}
+      <motion.div animate={controls}>
+        {
+          appState.map(breeds =>
+            <Box >
+              <Stack
+                spacing={{ base: 8, md: 10 }}
+                py={{ base: 5, md: 15 }}
+                width={{ base: '100%', md: '100%' }}
+                direction={{ base: 'column', md: 'row' }}
+                key={breeds.id}
               >
-                <Image
-                  alt={breeds.slug}
-                  borderRadius="lg"
-                  objectFit={"contain"}
-                  w={'100%'}
-                  h={'100%'}
-                  minWidth={{ base: '100%', md: "370px" }}
-                  maxWidth={{ base: '100%', md: "370px" }}
-                  src={breeds.image_url}
-                />
-              </Box>
-              <Stack width={"100%"} order={{ base: 0, md: 1 }} py={{ base: 10, md: 20 }} direction={'column'}>
-                <Link color={useColorModeValue('purple', 'orange')} href={`/${breeds.slug}`} _hover={{ opacity: 0.5 }}>
-                  <Heading
-                    width={"100%"}
-                    fontSize={{ base: '3xl', sm: '3xl', md: '3xl', lg: '4xl' }}
-                    textAlign={{ base: "center", md: "left" }}
+                <Box
+                  width={{ base: '100%', sm: '85%' }}
+                  zIndex="2"
+                  marginLeft={{ base: '0', sm: '5%' }}
+                  marginTop="5%"
+                  order={{ base: 1, md: 0 }}
+                >
+                  <Image
+                    alt={breeds.slug}
+                    borderRadius="lg"
+                    objectFit={"contain"}
+                    w={'100%'}
+                    h={'100%'}
+                    minWidth={{ base: '100%', md: "370px" }}
+                    maxWidth={{ base: '100%', md: "370px" }}
+                    src={breeds.image_url}
+                  />
+                </Box>
+                <Stack width={"100%"} order={{ base: 0, md: 1 }} py={{ base: 10, md: 20 }} direction={'column'}>
+                  <Link color={useColorModeValue('purple', 'orange')} href={`/${breeds.slug}`} _hover={{ opacity: 0.5 }}>
+                    <Heading
+                      width={"100%"}
+                      fontSize={{ base: '3xl', sm: '3xl', md: '3xl', lg: '4xl' }}
+                      textAlign={{ base: "center", md: "left" }}
 
-                  >
-                    {breeds.name}
-                  </Heading>
-                </Link>
+                    >
+                      {breeds.name}
+                    </Heading>
+                  </Link>
+                </Stack>
+
               </Stack>
+              <Divider marginTop="5" borderColor={useColorModeValue('purple', 'orange')} />
+            </Box>
 
-            </Stack>
-            <Divider marginTop="5" borderColor={useColorModeValue('purple', 'orange')} />
-          </Box>
-
-        )
-      }
+          )
+        }
+      </motion.div>
 
 
     </Box>
