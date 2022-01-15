@@ -19,9 +19,9 @@ const Navbar = () => {
     style={{backdropFilter: 'blur(10px)'}}
     zIndex={1}
     >
-      <Container display="flex" p={2} maxW="container.md" wrap="wrap" align="center" justify="space-between">
+      <Container display="flex" p={2} maxW="container.lg" wrap="wrap" align="center" justify="space-between">
         <Flex align="center" mr={5}>
-          <Heading as="h1" size="lg" letterSpacing={'tighter'}>
+          <Heading as="h1" size="lg"  letterSpacing={'tighter'}>
             <Logo />
           </Heading>
         </Flex>
