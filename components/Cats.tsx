@@ -5,6 +5,7 @@ import {
   Button,
   Center,
   Flex,
+  Radio,
   Heading,
   Image,
   Link,
@@ -12,34 +13,89 @@ import {
   Stack,
   Text,
   useColorModeValue,
+  useRadio,
+  useRadioGroup
 } from '@chakra-ui/react'
+
 
 import { getListBreedsP } from '../api/index'
 
 
+const RadioButton = (props) => {
+  const { getInputProps, getCheckboxProps } = useRadio(props)
+
+  const input = getInputProps()
+  const checkbox = getCheckboxProps()
+
+  return (
+    <Box as='label'>
+      <input {...input} />
+      <Box
+        {...checkbox}
+        width="auto"
+        height='var(--chakra-sizes-10)'
+        cursor='pointer'
+        bg="whiteAlpha.200"
+        borderRadius='md'
+        boxShadow='md'
+        transition='all 0.3s'
+        _hover={{
+          bg: 'whiteAlpha.400'
+        }}
+        _checked={{
+          bg: useColorModeValue('purple', 'orange'),
+          color: 'white',
+          borderColor: 'teal.600',
+        }}
+        px={5}
+        py={2}
+      >
+        {props.children}
+      </Box>
+    </Box>
+  )
+}
 
 const Cats = () => {
 
   const [appState, setAppState] = useState([]);
+  const options = ["1", "2", "3", "4", "5", "6", "7", "8"]
+  const [page, setPage] = useState("1");
+
+  const { getRootProps, getRadioProps } = useRadioGroup({
+    name: 'pages',
+    defaultValue: '1',
+    onChange: setPage
+  })
+  const group = getRootProps()
+
 
   useEffect(() => {
-    const data = getListBreedsP().then((breeds) => {
+    const data = getListBreedsP({ page: page }).then((breeds) => {
       setAppState(breeds);
-      console.log(breeds)
-
+      console.log(page)
     })
-  }, [setAppState]);
-
+  }, [page]);
 
   return (
-    <Box width={'100%'}>
+    <Box width={'100%'} justifyContent={{ base: 'normal', md: 'center' }}>
+      <Stack justifyContent="center" mt={20} direction="row" {...group}>
+        {options.map((value) => {
+          const radio = getRadioProps({ value })
+          return (
+            <RadioButton key={value} {...radio}>
+              {value}
+            </RadioButton>
+          )
+        })}
+      </Stack>
       {
         appState.map(breeds =>
-          <Box>
+          <Box >
             <Stack
               spacing={{ base: 8, md: 10 }}
-              py={{ base: 5, md: 28 }}
-              width={"100%"}
+              py={{ base: 5, md: 15 }}
+              width={{ base: '100%', md: '100%' }}
               direction={{ base: 'column', md: 'row' }}
               key={breeds.id}
             >
@@ -56,27 +112,31 @@ const Cats = () => {
                   objectFit={"contain"}
                   w={'100%'}
                   h={'100%'}
-                  minWidth={{ base: '100%', md: "574px" }}
+                  minWidth={{ base: '100%', md: "370px" }}
+                  maxWidth={{ base: '100%', md: "370px" }}
                   src={breeds.image_url}
                 />
               </Box>
-              <Stack order={{ base: 0, md: 1 }} py={{ base: 10, md: 20 }} direction={'column'}>
+              <Stack width={"100%"} order={{ base: 0, md: 1 }} py={{ base: 10, md: 20 }} direction={'column'}>
                 <Link color={useColorModeValue('purple', 'orange')} href={`/${breeds.slug}`} _hover={{ opacity: 0.5 }}>
                   <Heading
-                    fontSize={{ base: '3xl', sm: '3xl', lg: '5xl' }}
+                    width={"100%"}
+                    fontSize={{ base: '3xl', sm: '3xl', md: '3xl', lg: '4xl' }}
                     textAlign={{ base: "center", md: "left" }}
+
                   >
                     {breeds.name}
                   </Heading>
                 </Link>
               </Stack>
-              
+
             </Stack>
             <Divider marginTop="5" borderColor={useColorModeValue('purple', 'orange')} />
           </Box>
 
         )
       }
+
 
     </Box>
   )
