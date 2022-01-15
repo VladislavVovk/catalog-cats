@@ -18,6 +18,7 @@ const Layout = ({ children }: Props) => (
       <meta property="og:description" content="Discover 78 of the most beautiful, elegant and unique cat breeds. This complete and detailed list will help you choose your puurfect best friend"></meta>
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://catalog-cats.vercel.app" />
+      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"></link>
       <title>Wikipedia of cat breeds</title>
     </Head>
     <Navbar />

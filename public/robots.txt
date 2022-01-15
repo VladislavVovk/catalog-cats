@@ -40,5 +40,5 @@ Allow: /plugins/*.gif
 Clean-Param: utm_source&utm_medium&utm_campaign
 Crawl-Delay: 0.5
 
-Sitemap: https://catalog-cats.vercel.app/api/sitemap
+Sitemap: https://catalog-cats.vercel.app/sitemap
 Host: https://catalog-cats.vercel.app
