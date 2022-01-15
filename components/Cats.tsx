@@ -1,69 +1,36 @@
 import React, { useState, useEffect } from 'react'
 import {
   Box,
-  Badge,
-  Button,
-  Center,
-  Flex,
-  Radio,
   Heading,
   Image,
+  Button,
   Link,
   Divider,
   Stack,
-  Text,
   useColorModeValue,
-  useRadio,
-  useRadioGroup
+  useRadioGroup,
+  InputGroup,
+  InputLeftElement,
+  Input,
 } from '@chakra-ui/react'
-
-import Section from './Section'
+import { SearchIcon } from '@chakra-ui/icons'
 import { motion, useAnimation } from 'framer-motion'
+import RadioButton from './RadioButton'
 
 
-import { getListBreedsP } from '../api/index'
+import { getListBreedsP, getListBreedsSearch } from '../api/index'
 
-
-const RadioButton = (props) => {
-  const { getInputProps, getCheckboxProps } = useRadio(props)
-
-  const input = getInputProps()
-  const checkbox = getCheckboxProps()
-
-  return (
-    <Box as='label'>
-      <input {...input} />
-      <Box
-        {...checkbox}
-        width="auto"
-        height='var(--chakra-sizes-10)'
-        cursor='pointer'
-        bg="whiteAlpha.200"
-        borderRadius='md'
-        boxShadow='md'
-        transition='all 0.3s'
-        _hover={{
-          bg: 'whiteAlpha.400'
-        }}
-        _checked={{
-          bg: useColorModeValue('purple', 'orange'),
-          color: 'white',
-          borderColor: 'teal.600',
-        }}
-        px={5}
-        py={2}
-      >
-        {props.children}
-      </Box>
-    </Box>
-  )
-}
 
 const Cats = () => {
-
   const [appState, setAppState] = useState([]);
-  const options = ["1", "2", "3", "4", "5", "6", "7", "8"]
+  const [value, setValue] = React.useState('')
   const [page, setPage] = useState("1");
+
+  const options = ["1", "2", "3", "4", "5", "6", "7", "8"]
+
+  const handleChange = (event) => {
+    setValue(event.target.value)
+  }
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'pages',
@@ -87,7 +54,6 @@ const Cats = () => {
   useEffect(() => {
     const data = getListBreedsP({ page: page }).then((breeds) => {
       setAppState(breeds);
-      console.log(page)
     })
     controls.set({
       y: 10,
@@ -96,9 +62,41 @@ const Cats = () => {
     startAnimation()
   }, [page]);
 
+  useEffect(() => {
+    const data = getListBreedsSearch({ breed: value }).then((breeds) => {
+      setAppState(breeds);
+      console.log(breeds)
+
+    })
+    controls.set({
+      y: 10,
+      opacity: 0,
+    })
+    startAnimation()
+  }, [value]);
+
   return (
     <Box width={'100%'} justifyContent={{ base: 'normal', md: 'center' }}>
-      <Stack justifyContent="center" mt={20} direction="row" {...group}>
+
+      <InputGroup justifyContent={"center"} mt={20}>
+        <InputLeftElement
+          pointerEvents='none'
+          children={<SearchIcon color={useColorModeValue('gray.500', 'gray.300')} />}
+        />
+        <Input
+          type='text'
+          variant='flushed'
+          placeholder='Enter the breed of kitty'
+          borderColor={useColorModeValue('gray.500', 'gray.600')}
+          _focus={{
+            borderColor: useColorModeValue('purple', 'orange')
+          }}
+          value={value}
+          onChange={handleChange}
+        />
+      </InputGroup>
+
+      <Stack justifyContent="center" mt={10} direction="row" {...group}>
         {options.map((value) => {
           const radio = getRadioProps({ value })
           return (
@@ -109,9 +107,13 @@ const Cats = () => {
         })}
       </Stack>
       <motion.div animate={controls}>
-        {
+        {appState.length === 0 ?
+          <Heading mt={10}>
+            Похоже ничего не нашлось :(
+          </Heading> :
           appState.map(breeds =>
-            <Box >
+
+            <Box>
               <Stack
                 spacing={{ base: 8, md: 10 }}
                 py={{ base: 5, md: 15 }}
@@ -138,7 +140,7 @@ const Cats = () => {
                   />
                 </Box>
                 <Stack width={"100%"} order={{ base: 0, md: 1 }} py={{ base: 10, md: 20 }} direction={'column'}>
-                  <Link color={useColorModeValue('purple', 'orange')} href={`/${breeds.slug}`} _hover={{ opacity: 0.5 }}>
+                  <Link color={useColorModeValue('purple', 'orange')} href={`/breeds/${breeds.slug}`} _hover={{ opacity: 0.5 }}>
                     <Heading
                       width={"100%"}
                       fontSize={{ base: '3xl', sm: '3xl', md: '3xl', lg: '4xl' }}
