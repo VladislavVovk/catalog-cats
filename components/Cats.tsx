@@ -14,22 +14,22 @@ import {
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 import { motion, useAnimation } from 'framer-motion'
+
+// pagination button
 import RadioButton from './RadioButton'
 
-
+// methods for getting data from the server
 import { getListBreedsP, getListBreedsSearch } from '../api/index'
 
-
+// Main page with breeds
 const Cats = () => {
+  // State
   const [appState, setAppState] = useState([]);
   const [value, setValue] = React.useState('')
   const [page, setPage] = useState("1");
 
+  // data for pagination
   const options = ["1", "2", "3", "4", "5", "6", "7", "8"]
-
-  const handleChange = (event) => {
-    setValue(event.target.value)
-  }
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'pages',
@@ -38,6 +38,11 @@ const Cats = () => {
   })
   const group = getRootProps()
 
+  const handleChange = (event) => {
+    setValue(event.target.value)
+  }
+
+  // animation
   const controls = useAnimation();
   const startAnimation = () => {
     controls.start({
@@ -50,8 +55,9 @@ const Cats = () => {
     });
   }
 
+  // getting data for breeds
   useEffect(() => {
-    const data = getListBreedsP({ page: page }).then((breeds) => {
+    getListBreedsP({ page: page }).then((breeds) => {
       setAppState(breeds);
     })
     controls.set({
@@ -61,8 +67,9 @@ const Cats = () => {
     startAnimation()
   }, [page]);
 
+  // getting data for search
   useEffect(() => {
-    const data = getListBreedsSearch({ breed: value }).then((breeds) => {
+    getListBreedsSearch({ breed: value }).then((breeds) => {
       setAppState(breeds);
       console.log(breeds)
 
@@ -95,7 +102,7 @@ const Cats = () => {
         />
       </InputGroup>
 
-      <Stack  justifyContent="center" mt={10} direction="row"  {...group}>
+      <Stack justifyContent="center" mt={10} direction="row"  {...group}>
         {options.map((value) => {
           const radio = getRadioProps({ value })
           return (
@@ -145,22 +152,17 @@ const Cats = () => {
                       as="h2"
                       fontSize={{ base: '3xl', sm: '3xl', md: '3xl', lg: '4xl' }}
                       textAlign={{ base: "center", md: "left" }}
-
                     >
                       {breeds.name}
                     </Heading>
                   </Link>
                 </Stack>
-
               </Stack>
               <Divider marginTop="5" borderColor={useColorModeValue('purple', 'orange')} />
             </Box>
-
           )
         }
       </motion.div>
-
-
     </Box>
   )
 }

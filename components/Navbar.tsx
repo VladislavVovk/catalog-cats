@@ -1,4 +1,3 @@
-import Logo from './Logo'
 import {
   Container,
   Box, 
@@ -6,9 +5,13 @@ import {
   Flex,
   useColorModeValue
 } from '@chakra-ui/react'
+import Logo from './Logo'
+
+// theme switch button
 import ThemeToggleButton from './Theme-toggle-button'
 
 
+// Site header
 const Navbar = () => {
   return (
     <Box
