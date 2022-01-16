@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Text, useColorModeValue } from '@chakra-ui/react'
 import styled from '@emotion/styled'
 
+// block style logo
 const LogoBox = styled.span`
   font-weight: bold;
   font-size: 18px;
@@ -19,6 +20,7 @@ const LogoBox = styled.span`
 `
 
 const Logo = () => {
+  // Changing the logo depending on the theme
   const footPrintImg = `/images/footprint${useColorModeValue('', '-dark')}.png`
 
   return (

@@ -1,16 +1,10 @@
 import { 
-  Text, 
   useColorModeValue,
   Box,
   useRadio,
 } from '@chakra-ui/react'
 
-// type Props = {
-//  children: string
-//  "data-radiogroup": boolean
-//  isChecked: boolean
-// }
-
+// Pagination button
 const RadioButton = (props) => {
   
   const { getInputProps, getCheckboxProps } = useRadio(props)
