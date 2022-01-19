@@ -21,7 +21,7 @@ import RadioButton from './RadioButton'
 // methods for getting data from the server
 import { getListBreedsP, getListBreedsSearch } from '../api/index'
 import { arrayCount } from '../utils/page-count'
-
+import { useRouter } from "next/router"
 
 // Main page with breeds
 const Cats = () => {
@@ -31,10 +31,22 @@ const Cats = () => {
   const [page, setPage] = useState("1");
   const [countPage, setCountPage] = useState([])
 
+  const router = useRouter()
+  const handlePagination = (page: string) => {
+    const path = router.pathname
+    const query = router.query
+    query.page = page
+    router.push({
+      pathname: path,
+      query: query,
+    })
+    setPage(page)
+  }
+
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'pages',
     defaultValue: '1',
-    onChange: setPage
+    onChange: handlePagination
   })
   const group = getRootProps()
 
@@ -87,6 +99,7 @@ const Cats = () => {
       opacity: 0,
     })
     startAnimation()
+    setPage('1')
   }, [value]);
 
   return (
@@ -112,9 +125,9 @@ const Cats = () => {
 
       <Stack justifyContent="center" mt={10} direction="row"  {...group}>
         {countPage.map((value) => {
-          const radio = getRadioProps({ value })
+          const radio = getRadioProps({value})
           return (
-            <RadioButton key={value} {...radio}>
+            <RadioButton  key={value} {...radio}>
               {value}
             </RadioButton>
           )
