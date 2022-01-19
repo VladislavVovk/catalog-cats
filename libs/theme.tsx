@@ -1,5 +1,21 @@
-import { extendTheme } from '@chakra-ui/react'
+import { extendTheme, ThemeConfig, localStorageManager } from '@chakra-ui/react'
 import { mode } from '@chakra-ui/theme-tools'
+
+// const setMode = () => {
+//   const colorModeManager = localStorageManager
+//   let colorMode = colorModeManager.get()
+//   if (colorMode === undefined) {
+//     colorModeManager.set('dark')
+//     colorMode = colorModeManager.get()
+//     console.log(colorMode)
+//     return colorMode
+//   } else {
+//     colorMode = colorModeManager.get()
+//     console.log(colorMode)
+//     return colorMode
+//   }
+// }
+
 
 const styles = {
   global: props => ({
@@ -13,14 +29,14 @@ const fonts = {
   Heading: "'M PLUS Rounded 1c'",
 }
 
-const config = {
+const config: ThemeConfig = {
   initialColorMode: 'dark',
-  useSystemColorMode: true
+  useSystemColorMode: false
 }
 
 const theme = extendTheme({
-  config, 
-  styles, 
+  config,
+  styles,
   fonts
 })
 

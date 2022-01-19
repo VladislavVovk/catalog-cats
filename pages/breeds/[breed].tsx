@@ -14,7 +14,8 @@ import { ArrowBackIcon } from '@chakra-ui/icons'
 import { getListBreed } from '../../api/index'
 
 const Breed = ({ cats }) => {
-  console.log(cats)
+
+
   return (
     <motion.div
       initial={{ y: 10, opacity: 0 }}

@@ -71,7 +71,6 @@ const Cats = () => {
   useEffect(() => {
     getListBreedsSearch({ breed: value }).then((breeds) => {
       setAppState(breeds);
-      console.log(breeds)
 
     })
     controls.set({
