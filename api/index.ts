@@ -10,7 +10,7 @@ export const getListBreedsP = ({ page }: Props) => {
   const apiUrl = `https://cats-api.strsqr.cloud/cats?p=${page}`
 
   const data = axios.get(apiUrl).then((resp) => {
-    return resp.data
+    return resp
   })
   return data
 }
@@ -20,7 +20,7 @@ export const getListBreedsSearch = ({ breed }: Props) => {
   const apiUrl = `https://cats-api.strsqr.cloud/cats?q=${breed}`
 
   const data = axios.get(apiUrl).then((resp) => {
-    return resp.data
+    return resp
   })
   return data
 }
@@ -34,3 +34,14 @@ export const getListBreed = ({ breed }: Props) => {
   })
   return data
 }
+
+
+// // Request for breeds with pagination
+// export const getListBreedsPandQ = ({ page, breed }: Props) => {
+//   const apiUrl = `https://cats-api.strsqr.cloud/cats?p=${page}`
+
+//   const data = axios.get(apiUrl).then((resp) => {
+//     return resp
+//   })
+//   return data
+// }

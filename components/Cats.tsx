@@ -20,6 +20,8 @@ import RadioButton from './RadioButton'
 
 // methods for getting data from the server
 import { getListBreedsP, getListBreedsSearch } from '../api/index'
+import { arrayCount } from '../utils/page-count'
+
 
 // Main page with breeds
 const Cats = () => {
@@ -27,9 +29,7 @@ const Cats = () => {
   const [appState, setAppState] = useState([]);
   const [value, setValue] = React.useState('')
   const [page, setPage] = useState("1");
-
-  // data for pagination
-  const options = ["1", "2", "3", "4", "5", "6", "7", "8"]
+  const [countPage, setCountPage] = useState([])
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'pages',
@@ -55,10 +55,18 @@ const Cats = () => {
     });
   }
 
+  // data for pagination
+  useEffect(() => {
+    getListBreedsP({ page: page }).then((breeds) => {
+      const count: string[] = arrayCount(parseInt(breeds.headers['cats-count']))
+      setCountPage(count)
+    })
+  }, [setCountPage]);
+
   // getting data for breeds
   useEffect(() => {
     getListBreedsP({ page: page }).then((breeds) => {
-      setAppState(breeds);
+      setAppState(breeds.data);
     })
     controls.set({
       y: 10,
@@ -70,8 +78,9 @@ const Cats = () => {
   // getting data for search
   useEffect(() => {
     getListBreedsSearch({ breed: value }).then((breeds) => {
-      setAppState(breeds);
-
+      const count: string[] = arrayCount(parseInt(breeds.headers['cats-count']))
+      setCountPage(count)
+      setAppState(breeds.data);
     })
     controls.set({
       y: 10,
@@ -102,7 +111,7 @@ const Cats = () => {
       </InputGroup>
 
       <Stack justifyContent="center" mt={10} direction="row"  {...group}>
-        {options.map((value) => {
+        {countPage.map((value) => {
           const radio = getRadioProps({ value })
           return (
             <RadioButton key={value} {...radio}>
