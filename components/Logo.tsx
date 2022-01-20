@@ -21,7 +21,7 @@ const LogoBox = styled.span`
 
 const Logo = () => {
   // Changing the logo depending on the theme
-  const footPrintImg = `/images/footprint${useColorModeValue('', '-dark')}.png`
+  const footPrintImg: string = `/images/footprint${useColorModeValue('', '-dark')}.png`
 
   return (
     <Link href="/">

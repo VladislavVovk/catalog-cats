@@ -19,6 +19,7 @@ const Layout = ({ children }: Props) => (
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://catalog-cats.vercel.app" />
       <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"></link>
+      <link rel="stylesheet" type="text/css" href="/css/nprogress.css" />
       <title>Wikipedia of cat breeds</title>
     </Head>
     <Navbar />

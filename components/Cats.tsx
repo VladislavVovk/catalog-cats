@@ -20,25 +20,46 @@ import RadioButton from './RadioButton'
 
 // methods for getting data from the server
 import { getListBreedsP, getListBreedsSearch } from '../api/index'
+import { arrayCount } from '../utils/page-count'
+import { useRouter } from "next/router"
+import { IBreedsData } from '../interface/index'
 
 // Main page with breeds
 const Cats = () => {
   // State
-  const [appState, setAppState] = useState([]);
-  const [value, setValue] = React.useState('')
-  const [page, setPage] = useState("1");
+  const [appState, setAppState] = useState<IBreedsData | null>({ data: [] });
+  const [value, setValue] = React.useState<string>('')
+  const [page, setPage] = useState<string>("1");
+  const [countPage, setCountPage] = useState<string[]>([])
 
-  // data for pagination
-  const options = ["1", "2", "3", "4", "5", "6", "7", "8"]
+  const router = useRouter()
+  const handlePagination = (page: string) => {
+    const path: string = router.pathname
+    const query = router.query
+    query.page = page
+    router.push({
+      pathname: path,
+      query: query,
+    })
+    setPage(page)
+  }
+
+  const handleDescription = (name: string) => {
+    const path: string = name 
+    console.log(path)
+    router.push({
+      pathname: path
+    })
+  }
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'pages',
     defaultValue: '1',
-    onChange: setPage
+    onChange: handlePagination
   })
   const group = getRootProps()
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     setValue(event.target.value)
   }
 
@@ -55,10 +76,18 @@ const Cats = () => {
     });
   }
 
+  // data for pagination
+  useEffect(() => {
+    getListBreedsP({ page: page }).then((breeds) => {
+      const count: string[] = arrayCount(parseInt(breeds.headers['cats-count']))
+      setCountPage(count)
+    })
+  }, [setCountPage]);
+
   // getting data for breeds
   useEffect(() => {
     getListBreedsP({ page: page }).then((breeds) => {
-      setAppState(breeds);
+      setAppState({ data: breeds.data });
     })
     controls.set({
       y: 10,
@@ -70,16 +99,18 @@ const Cats = () => {
   // getting data for search
   useEffect(() => {
     getListBreedsSearch({ breed: value }).then((breeds) => {
-      setAppState(breeds);
-      console.log(breeds)
-
+      const count: string[] = arrayCount(parseInt(breeds.headers['cats-count']))
+      setCountPage(count)
+      setAppState({ data: breeds.data });
     })
     controls.set({
       y: 10,
       opacity: 0,
     })
     startAnimation()
+    setPage('1')
   }, [value]);
+
 
   return (
     <Box width={'100%'} justifyContent={{ base: 'normal', md: 'center' }}>
@@ -103,7 +134,7 @@ const Cats = () => {
       </InputGroup>
 
       <Stack justifyContent="center" mt={10} direction="row"  {...group}>
-        {options.map((value) => {
+        {countPage.map((value) => {
           const radio = getRadioProps({ value })
           return (
             <RadioButton key={value} {...radio}>
@@ -112,12 +143,13 @@ const Cats = () => {
           )
         })}
       </Stack>
+
       <motion.div animate={controls}>
-        {appState.length === 0 ?
+        {appState.data.length === 0 ?
           <Heading as="h2" mt={10}>
             Похоже ничего не нашлось :(
           </Heading> :
-          appState.map(breeds =>
+          appState.data.map(breeds =>
 
             <Box>
               <Stack
@@ -146,8 +178,12 @@ const Cats = () => {
                   />
                 </Box>
                 <Stack width={"100%"} order={{ base: 0, md: 1 }} py={{ base: 10, md: 20 }} direction={'column'}>
-                  <Link color={useColorModeValue('purple', 'orange')} href={`/breeds/${breeds.slug}`} _hover={{ opacity: 0.5 }}>
                     <Heading
+                      onClick={() => handleDescription(breeds.slug)}
+                      cursor={'pointer'}
+                      color={useColorModeValue('purple', 'orange')}
+                      _hover={{ opacity: 0.5 }}
+
                       width={"100%"}
                       as="h2"
                       fontSize={{ base: '3xl', sm: '3xl', md: '3xl', lg: '4xl' }}
@@ -155,7 +191,6 @@ const Cats = () => {
                     >
                       {breeds.name}
                     </Heading>
-                  </Link>
                 </Stack>
               </Stack>
               <Divider marginTop="5" borderColor={useColorModeValue('purple', 'orange')} />
