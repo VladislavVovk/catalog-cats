@@ -12,13 +12,13 @@ import {
 const NotFound = () => {
   return (
     <Container>
-      <Heading as="h2">Not Found</Heading>
-      <Text>The page you&apos;re looking for was not found.</Text>
+      <Heading as="h2">Страница не найдена</Heading>
+      <Text>Страница устарела, была удалена или не существовала вовсе</Text>
       <Divider my={6} />
 
       <Box my={6} align="center">
         <NextLink href="/">
-          <Button bg={useColorModeValue('purple', 'orange')}>Return to home</Button>
+          <Button color={useColorModeValue('white', 'white')} bg={useColorModeValue('purple', 'orange')}>Главная</Button>
         </NextLink>
       </Box>
     </Container>
