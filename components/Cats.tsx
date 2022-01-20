@@ -22,18 +22,19 @@ import RadioButton from './RadioButton'
 import { getListBreedsP, getListBreedsSearch } from '../api/index'
 import { arrayCount } from '../utils/page-count'
 import { useRouter } from "next/router"
+import { IBreedsData } from '../interface/index'
 
 // Main page with breeds
 const Cats = () => {
   // State
-  const [appState, setAppState] = useState([]);
-  const [value, setValue] = React.useState('')
-  const [page, setPage] = useState("1");
-  const [countPage, setCountPage] = useState([])
+  const [appState, setAppState] = useState<IBreedsData | null>({ data: [] });
+  const [value, setValue] = React.useState<string>('')
+  const [page, setPage] = useState<string>("1");
+  const [countPage, setCountPage] = useState<string[]>([])
 
   const router = useRouter()
   const handlePagination = (page: string) => {
-    const path = router.pathname
+    const path: string = router.pathname
     const query = router.query
     query.page = page
     router.push({
@@ -50,7 +51,7 @@ const Cats = () => {
   })
   const group = getRootProps()
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     setValue(event.target.value)
   }
 
@@ -78,7 +79,7 @@ const Cats = () => {
   // getting data for breeds
   useEffect(() => {
     getListBreedsP({ page: page }).then((breeds) => {
-      setAppState(breeds.data);
+      setAppState({ data: breeds.data });
     })
     controls.set({
       y: 10,
@@ -92,7 +93,7 @@ const Cats = () => {
     getListBreedsSearch({ breed: value }).then((breeds) => {
       const count: string[] = arrayCount(parseInt(breeds.headers['cats-count']))
       setCountPage(count)
-      setAppState(breeds.data);
+      setAppState({ data: breeds.data });
     })
     controls.set({
       y: 10,
@@ -101,6 +102,7 @@ const Cats = () => {
     startAnimation()
     setPage('1')
   }, [value]);
+
 
   return (
     <Box width={'100%'} justifyContent={{ base: 'normal', md: 'center' }}>
@@ -125,20 +127,21 @@ const Cats = () => {
 
       <Stack justifyContent="center" mt={10} direction="row"  {...group}>
         {countPage.map((value) => {
-          const radio = getRadioProps({value})
+          const radio = getRadioProps({ value })
           return (
-            <RadioButton  key={value} {...radio}>
+            <RadioButton key={value} {...radio}>
               {value}
             </RadioButton>
           )
         })}
       </Stack>
+
       <motion.div animate={controls}>
-        {appState.length === 0 ?
+        {appState.data.length === 0 ?
           <Heading as="h2" mt={10}>
             Похоже ничего не нашлось :(
           </Heading> :
-          appState.map(breeds =>
+          appState.data.map(breeds =>
 
             <Box>
               <Stack

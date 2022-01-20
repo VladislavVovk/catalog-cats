@@ -12,8 +12,8 @@ import {
 const NotFound = () => {
   return (
     <Container>
-      <Heading as="h2">Страница не найдена</Heading>
-      <Text>Страница устарела, была удалена или не существовала вовсе</Text>
+      <Heading as="h1">Страница не найдена</Heading>
+      <Text as="h2">Страница устарела, была удалена или не существовала вовсе</Text>
       <Divider my={6} />
 
       <Box my={6} align="center">

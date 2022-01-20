@@ -15,7 +15,6 @@ import { getListBreed } from '../../api/index'
 
 const Breed = ({ cats }) => {
 
-
   return (
     <motion.div
       initial={{ y: 10, opacity: 0 }}
@@ -62,7 +61,7 @@ const Breed = ({ cats }) => {
             />
             <Heading
               width={"100%"}
-              as="h2"
+              as="h1"
               fontSize={{ base: '3xl', sm: '3xl', md: '3xl', lg: '4xl' }}
               textAlign={{ base: "center", md: "left" }}
             >
@@ -82,9 +81,9 @@ const Breed = ({ cats }) => {
 
 export default Breed
 
-export const getServerSideProps = async (context) => {
+export const getServerSideProps = async (context: any) => {
   const res = await getListBreed({ breed: context.params.breed }).then((cat) => {
-    return cat
+    return cat.data
   })
   const cats = res
   return {

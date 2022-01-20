@@ -4,9 +4,17 @@ import {
   useRadio,
 } from '@chakra-ui/react'
 
+type Props = {
+  children: string
+  isChecked?: boolean
+  key: any
+  name?: string
+  onChange?: (e: any) => void
+  value?: any
+}
+
 // Pagination button
-const RadioButton = (props) => {
-  
+const RadioButton = (props: Props) => {
   const { getInputProps, getCheckboxProps } = useRadio(props)
 
   const input = getInputProps()
