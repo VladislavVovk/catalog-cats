@@ -44,6 +44,14 @@ const Cats = () => {
     setPage(page)
   }
 
+  const handleDescription = (name: string) => {
+    const path: string = name 
+    console.log(path)
+    router.push({
+      pathname: path
+    })
+  }
+
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'pages',
     defaultValue: '1',
@@ -170,8 +178,12 @@ const Cats = () => {
                   />
                 </Box>
                 <Stack width={"100%"} order={{ base: 0, md: 1 }} py={{ base: 10, md: 20 }} direction={'column'}>
-                  <Link color={useColorModeValue('purple', 'orange')} href={`/breeds/${breeds.slug}`} _hover={{ opacity: 0.5 }}>
                     <Heading
+                      onClick={() => handleDescription(breeds.slug)}
+                      cursor={'pointer'}
+                      color={useColorModeValue('purple', 'orange')}
+                      _hover={{ opacity: 0.5 }}
+
                       width={"100%"}
                       as="h2"
                       fontSize={{ base: '3xl', sm: '3xl', md: '3xl', lg: '4xl' }}
@@ -179,7 +191,6 @@ const Cats = () => {
                     >
                       {breeds.name}
                     </Heading>
-                  </Link>
                 </Stack>
               </Stack>
               <Divider marginTop="5" borderColor={useColorModeValue('purple', 'orange')} />

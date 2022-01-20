@@ -21,6 +21,14 @@ const styles = {
   global: props => ({
     body: {
       bg: mode('#f0e7db', '#202023')(props)
+    },
+    '#nprogress .bar': {
+      bg: mode('purple', 'orange')(props),
+      height: mode('4px', '2px')(props)
+    },
+    '#nprogress .spinner-icon': {
+      borderTopColor: mode('purple', 'orange')(props),
+      borderLeftColor: mode('purple', 'orange')(props)
     }
   })
 }

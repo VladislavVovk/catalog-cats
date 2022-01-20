@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 
 import { ArrowBackIcon } from '@chakra-ui/icons'
-import { getListBreed } from '../../api/index'
+import { getListBreed } from '../api/index'
 
 const Breed = ({ cats }) => {
 
